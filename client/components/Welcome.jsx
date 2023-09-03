@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import { TransactionContext } from "@/context/TransactionContext";
+import React, { useContext, useState } from "react";
 import {} from "react-icons/ai";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import { SiEthereum } from "react-icons/si";
@@ -24,9 +25,22 @@ const Input = ({ placeholder, name, type, value, handleChange }) => {
 
 const Welcome = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const connectWallet = () => {};
+  const {
+    connectWallet,
+    connectedAccount,
+    formData,
+    handleChange,
+    sendTransaction
+  } = useContext(TransactionContext);
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    const { addressTo, amount, keyword, message } = formData;
+    e.preventDefault();
+
+    if (!addressTo || !amount || !keyword || !message) return;
+
+    sendTransaction();
+  };
   return (
     <div className="flex w-full justify-center items-center">
       <div className="flex mf:flex-row flex-col items-center justify-between md:p-20 py-12 px-4">
@@ -38,13 +52,15 @@ const Welcome = () => {
             Explore the crypto world. Buy and sell cryptocurrencies easily on
             Krypto.
           </p>
-          <button
-            className="flex flex-row text-white text-base font-semibold justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
-            type="button"
-            onClick={connectWallet}
-          >
-            Connect Wallet
-          </button>
+          {!connectedAccount && (
+            <button
+              className="flex flex-row text-white text-base font-semibold justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
+              type="button"
+              onClick={connectWallet}
+            >
+              Connect Wallet
+            </button>
+          )}
 
           <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
             <div className={`rounded-tl-2xl ${commonStyles}`}>Reliability</div>
@@ -80,31 +96,39 @@ const Welcome = () => {
               placeholder="Address..."
               name="addressTo"
               type="text"
-              handleChange={() => {}}
+              handleChange={handleChange}
             />
             <Input
               placeholder="Amount(ETH)"
               name="amount"
               type="number"
-              handleChange={() => {}}
+              handleChange={handleChange}
             />
             <Input
               placeholder="Title"
               name="keyword"
               type="text"
-              handleChange={() => {}}
+              handleChange={handleChange}
             />
             <Input
               placeholder="Enter Message..."
               name="message"
               type="text"
-              handleChange={() => {}}
+              handleChange={handleChange}
             />
 
             <div className="h-[1px] w-full bg-gray-400 my-2" />
 
-            {isLoading ? (<div>Loading...</div>) : (
-              <button type="button" onClick={handleSubmit} className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer">Send</button>
+            {isLoading ? (
+              <div>Loading...</div>
+            ) : (
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer"
+              >
+                Send
+              </button>
             )}
           </div>
         </div>
