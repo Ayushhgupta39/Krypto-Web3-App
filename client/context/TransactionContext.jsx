@@ -8,8 +8,6 @@ import { contractAbi, contractAddress } from "@/utils/constants";
 
 export const TransactionContext = React.createContext();
 
-const { ethereum } = window;
-
 const getEthereumContract =  () => {
   const provider = new ethers.providers.Web3Provider(ethereum, "any");
   const signer = provider.getSigner();
@@ -85,7 +83,6 @@ export const TransactionProvider = ({ children }) => {
       const transactionContract = getEthereumContract();
       const transactionCount = await transactionContract.getTransactionCount();
 
-      window.localStorage.setItem("transactionCount", transactionCount);
     } catch (error) {
       console.log(error);
       throw new Error("No ethereum object.");
