@@ -1,6 +1,7 @@
 "use client";
 
 import { TransactionContext } from "@/context/TransactionContext";
+import { shortenAddress } from "@/utils/shortenAddress";
 import React, { useContext, useState } from "react";
 import {} from "react-icons/ai";
 import { BiSolidInfoCircle } from "react-icons/bi";
@@ -83,7 +84,7 @@ const Welcome = () => {
               </div>
               <div>
                 <p className="text-white font-light text-sm">
-                  0xsafadfsd314...asdf
+                  {shortenAddress(connectedAccount)}
                 </p>
                 <p className="text-white font-semibold text-lg mt-1">
                   Ethereum
